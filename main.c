@@ -1,71 +1,49 @@
 #include <stdlib.h>
+\include "buf.h"
 #include <stdio.h>
 #include <string.h>
 #include "monty.h"
-
 /**
- * error_usage - prints usage message and exits
- *
- * Return: nothing
+ * main - main function for monty interpreter
+ * @argc: argument count
+ * @argv: arrays of arguments
+ * Return: returs 0 on success
  */
-void error_usage(void)
+int main(int argc, string argv[])
 {
-	fprintf(stderr, "USAGE: monty file\n");
-	exit(EXIT_FAILURE);
-}
-
-/**
- * file_error - prints file error message and exits
- * @argv: argv given by manin
- *
- * Return: nothing
- */
-void file_error(char *argv)
-{
-	fprintf(stderr, "Error: Can't open file %s\n", argv);
-	exit(EXIT_FAILURE);
-}
-
-int status = 0;
-/**
- * main - entry point
- * @argv: list of arguments passed to our program
- * @argc: ammount of args
- * 
- * Return: nothing
- */
-int main(int argc, char **argv)
-{
+	char *command;
 	FILE *file;
-	size_t buf_len = 0;
-	char *buffer = NULL;
-	char *str = NULL;
+	size_t n = 0;
+	/*string str = NULL;*/
+	ssize_t readl = 1;
 	stack_t *stack = NULL;
-	unsigned int line_cnt = 1;
+	unsigned int count = 0;
 
-	global.data_struct = 1;
 	if (argc != 2)
-		error_usage();
-
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
 	file = fopen(argv[1], "r");
+	buf.file = file;
 
 	if (!file)
-		file_error(argv[1]);
-
-	while (getline(&buffer, &buf_len, file) != -1)
 	{
-		if (status)
-			break;
-		if (*buffer == '\n')
-		{
-			line_cnt++;
-			continue;
-		}
-		global.argument = strtok(NULL, " \t\n");1~
-		opcode(&stack, str, line_cnt);
-		line_cnt++;
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
 	}
-	free(buffer);
-	free_stack(stack);
+	while (readl > 0)
+	{
+		command = NULL;
+		readl = getline(&command, &n, file);
+		buf.command = command;
+		count++;
+		if (readl > 0)
+			exec_op(command, &stack, count, file);
+		free(command);
+	}
+	free_dlist(stack);
 	fclose(file);
-	exit(status);
+return (0);
+}
+

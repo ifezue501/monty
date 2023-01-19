@@ -4,28 +4,24 @@
 #include "monty.h"
 
 /**
- * swap -  swaps data from top to previous
- * @stack: stack given by main
- * @line_number: ammount of lines
- * 
- * Return: void
+ * _swap - swaps data from top to previous
+ * @head: head given by main
+ * @line_number: ammount of line
  */
-void swap(stack_t **stack, unsigned int line_number)
+void _swap(stack_t **head, unsigned int line_number)
 {
-	stack_t *tmp = NULL;
-	int tmp_n = 0;
+	stack_t *tmp;
+	int num;
 
-	if (!stack || !*stack || !((*stack)->next))
+	tmp = *head;
+	if(tmp == NULL || tmp->next == NULL)
 	{
 		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
-		status = EXIT_FAILURE;
-		return;
+		exit(EXIT_FAILURE);
 	}
-	tmp = *stack;
-	tmp_n = tmp->n;
-	tmp->n = tmp_n;
-
+	num = tmp->n;
 	tmp->n = tmp->next->n;
-	tmp->next->n = tmp_n;
+	tmp->next->n = num;
 
 }
+

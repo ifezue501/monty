@@ -5,37 +5,42 @@
 #include "monty.h"
 
 /**
- * push - push element into the stack
- * @stack: stack given by main
+ * _push - push element into the stack
+ * @stack: head of a stack  given by main
  * @line_number: ammount of lines
- *
- * Return: void
  */
-void push(stack_t **stack, unsigned int line_number)
+void _push(stack_t **head, unsigned int line_number)
 {
-	char *n = global.argument;
+	int n, j = 0, flag = 0;
 
-	if ((is_digit(n)) == 0)
+	if (buf.arg)
 	{
-		fprintf(stderr, "L%d: usage: push integer\n", line_number);
-		status = EXIT_FAILURE;
-		return;
-	}
-
-	if (global.data_struct == 1)
-	{
-		if (!add_node(stack, atoi(global.argument)))
+		if (buf.arg[0] == '-')
+			j++;
+		for (; buf.arg[j] != '\0'; j++)
 		{
-			return;
-			status = EXIT_FAILURE;
+			if (buf.arg[j] > 57 || buf.arg[j] < 48)
+				flag = 1;
+		}
+		if (flag == 1)
+		{ fprintf(stderr, "L%d: usage: push integer\n", line_number);
+			fclose(buf.file);
+			free(buf.command);
+			free_dlist(*head);
+			exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
-		if (!queue_node(stack, atoi(global.argument)))
-		{
-			return;
-			status = EXIT_FAILURE;
-		}
+		fprintf(stderr, "L%d: usage: push integer\n", line_number);
+		fclose(buf.file);
+		free(buf.command);
+		free_dlist(*head);
+		exit(EXIT_FAILURE);
 	}
+	n = atoi(buf.arg);
+	if (buf.flag == 0)
+		addnode(head, n);
+	else
+		addqueue(head, n);
 }

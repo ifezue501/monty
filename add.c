@@ -6,23 +6,40 @@
 
 /**
  * _add -  adds the first two nodes of the stack
- * @stack: stack given by main
+ * @head: head given by main
  * @line_number: line counter
- * 
- * Return: void
  */
-void _add(stack_t **stack, unsigned int line_number)
+void _add(stack_t **head, unsigned int line_number)
 {
-	int result;
+	stack_t *tmp;
+	int len;
+	int sum;
 
-	if (!stack || !*stack || !((*stack)->next))
+	tmp = *head;
+	len = 0;
+	if (tmp == NULL)
 	{
-		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
-		status = EXIT_FAILURE;
-		return;
+		fprintf(stderr, "L%d: can't add, stack too short", line_number);
+		exit(EXIT_FAILURE);
 	}
+	while (tmp)
+	{
+		tmp = tmp->next;
+		len++;
+	}
+	if (head == NULL ||(*head)->next == NULL || len < 2)
+	{
+		fprintf(stderr, "L%d: can't add, stack too short", line_number);
+		fclose(buf.file);
+		free(buf.command);
+		free_dlist(*head);
+		exit(EXIT_FAILURE);
+	}
+	tmp = *head;
+	sum = tmp->n + tmp->next->n;
+	tmp->next->n = sum;
+	*head = tmp->next;
+	free(tmp);
 
-	result = ((*stack)->next->n) + ((*stack)->n);
-	pop(stack, line_cnt);/*For top node*/
-	(*stack)->n = result;
 }
+

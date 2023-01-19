@@ -5,38 +5,56 @@
 
 /**
  * opcode - function in charge of running builtins
- * @stack: stack given by main
- * @str: string to compare
- * @line_cnt: ammount of lines
- * 
+ * @head: head given by main
+ * @count: line_counter
+ * @file: poiner to monty file
+ * @command: line content
  * Return: nothing
  */
-void opcode(stack_t **stack, char *str, unsigned int line_cnt)
+
+int exec_op(string command, stack_t **head, unsigned int count, FILE *file)
 {
-	int i = 0;
+	string delim = " \n\t";
+	unsigned int i = 0;
+	string c_op;
 
-	instruction_t op[] = INSTRUCTIONS;
-
-	if (!strcmp(str, "stack"))
+	/*Declaring the opcodes struct*/
+	instruction_t opt[] = {
+		{"push", _push},
+		{"pall", _pall},
+		{"pint", _pint},
+		{"pop", _pop},
+		{"swap", _swap},
+		{"add", _add},
+		{"nop", _nop},
+		{"sub", _sub},
+		{"div", _div},
+		{NULL, NULL}
+	};
+	/*Tokenzing the commands args to be executed */
+	c_op = strtok(command, delim);
+	if (c_op && c_op[0] == '#')
+		return (0);
+	buf.arg = strtok(NULL, delim);
+	while (opt[i].opcode && c_op)
 	{
-		global.data_struct = 1;
-		return;
-	}
-	if (!strcmp(str, "queue"))
-	{
-		global.data_struct = 0;
-		return;
-	}
-
-	while (op[i].opcode)
-	{
-		if (strcmp(op[i].opcode, str) == 0)
+		if (strcmp(c_op, opt[i].opcode) == 0)
 		{
-			op[i].f(stack, line_cnt);
-			return; /* if we found a match, run the function */
+			opt[i].f(head, count);
+			return (0);
 		}
 		i++;
 	}
-	fprintf(stderr, "L%d: unknown instruction %s\n", line_cnt, str);
-	status = EXIT_FAILURE;
+	if (c_op && !opt[i].opcode)
+	{
+		fprintf(stderr, "L%d: unknown instruction %s\n", count, c_op);
+		fclose(file);
+		free(command);
+		free_dlist(*head);
+		exit(EXIT_FAILURE);
+	}
+	return (1);
+
+
 }
+
