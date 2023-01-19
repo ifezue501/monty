@@ -6,15 +6,15 @@
 /**
  * pint - print the top data
  * @stack: stack given by main
- * @line_cnt: ammount of lines
+ * @line_number: ammount of lines
  * 
  * Return: void
  */
-void pint(stack_t **stack, unsigned int line_cnt)
+void pint(stack_t **stack, unsigned int line_number)
 {
 	if (!stack || !(*stack))
 	{
-		fprintf(stderr, "L%d: can't pint, stack empty\n", line_cnt);
+		fprintf(stderr, "L%d: can't pint, stack empty\n", line_number);
 		status = EXIT_FAILURE;
 		return;
 	}

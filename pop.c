@@ -7,17 +7,17 @@
 /**
  * pop - pops the very top
  * @stack: stack given by main
- * @line_cnt: line number for error messages
+ * @line_number: line number for error messages
  * 
  * Return: void
  */
-void pop(stack_t **stack, unsigned int line_cnt)
+void pop(stack_t **stack, unsigned int line_number)
 {
 	stack_t *tmp = NULL;
 
 	if (!stack || !*stack)
 	{
-		fprintf(stderr, "L%u: can't pop an empty stack\n", line_cnt);
+		fprintf(stderr, "L%u: can't pop an empty stack\n", line_number);
 		status = EXIT_FAILURE;
 		return;
 	}

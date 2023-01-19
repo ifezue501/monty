@@ -7,17 +7,17 @@
 /**
  * _add -  adds the first two nodes of the stack
  * @stack: stack given by main
- * @line_cnt: line counter
+ * @line_number: line counter
  * 
  * Return: void
  */
-void _add(stack_t **stack, unsigned int line_cnt)
+void _add(stack_t **stack, unsigned int line_number)
 {
 	int result;
 
 	if (!stack || !*stack || !((*stack)->next))
 	{
-		fprintf(stderr, "L%d: can't add, stack too short\n", line_cnt);
+		fprintf(stderr, "L%d: can't add, stack too short\n", line_number);
 		status = EXIT_FAILURE;
 		return;
 	}

@@ -6,18 +6,18 @@
 /**
  * swap -  swaps data from top to previous
  * @stack: stack given by main
- * @line_cnt: ammount of lines
+ * @line_number: ammount of lines
  * 
  * Return: void
  */
-void swap(stack_t **stack, unsigned int line_cnt)
+void swap(stack_t **stack, unsigned int line_number)
 {
 	stack_t *tmp = NULL;
 	int tmp_n = 0;
 
 	if (!stack || !*stack || !((*stack)->next))
 	{
-		fprintf(stderr, "L%d: can't swap, stack too short\n", line_cnt);
+		fprintf(stderr, "L%d: can't swap, stack too short\n", line_number);
 		status = EXIT_FAILURE;
 		return;
 	}
